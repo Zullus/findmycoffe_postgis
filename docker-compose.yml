@@ -1,0 +1,35 @@
+version: '3.0'
+
+services:
+  fmc_postgis:
+    container_name: fmc_postgis
+    image: 'cheewai/postgis'
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./dados:/var/lib/postgresql/data
+    networks:
+      - findmycoffe
+    environment:
+      POSTGRES_PASSWORD: "Postgres2020!"
+
+  fmc-admin:
+    container_name: fmc-admin
+    image: 'dpage/pgadmin4'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "teste@teste.com"
+      PGADMIN_DEFAULT_PASSWORD: "Postgres2020!"
+    restart: always
+    links:
+      - fmc_postgis
+    ports:
+      - "16543:80"
+    depends_on:
+      - fmc_postgis
+    networks:
+      - findmycoffe
+
+networks:
+  findmycoffe:
+    driver: bridge
