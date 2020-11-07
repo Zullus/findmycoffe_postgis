@@ -1,6 +1,22 @@
 version: '3.0'
 
 services:
+  fmc_app:
+    container_name: fmc_app
+    build: .
+    volumes:
+      - ".:/registrar_web"
+    ports:
+      - "3001:3000"
+    depends_on:
+      - fmc_postgis
+    links:
+      - fmc_postgis
+    environment:
+      DB_USER: "teste@teste.com"
+      DB_PASSWORD: "Postgres2020!"
+      DB_HOST: fmc_postgis
+
   fmc_postgis:
     container_name: fmc_postgis
     image: 'cheewai/postgis'
